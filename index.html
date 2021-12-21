@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="game.css">
+    <title>Tic-Tac-Toe</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md fixed-top bg-dark">
+        <div class="container">
+            <a href="#" class="navbar-brand text-white m-auto">
+                TIC-TAC-TOE
+            </a>
+        </div>
+    </nav>
+    <div class="gamesetting">
+        <div class="row">
+            <div class="col-lg-5 col-md-5 col-sm-10 col-12 d-block m-auto">
+                <table border="2px" class="tablesetting">
+                    <tr align="center">
+                        <td>
+                            <input type="button" value="   " class="button btn-dark" id="1" onclick="playgame(this.id)">
+                        </td>
+                        <td>
+                            <input type="button" value="   " class="button btn-dark" id="2" onclick="playgame(this.id)">
+                        </td>
+                        <td>
+                            <input type="button" value="   " class="button btn-dark" id="3" onclick="playgame(this.id)">
+                        </td>
+                    </tr>
+                    <tr align="center">
+                        <td>
+                            <input type="button" value="   " class="button btn-dark" id="4" onclick="playgame(this.id)">
+                        </td>
+                        <td>
+                            <input type="button" value="   " class="button btn-dark" id="5" onclick="playgame(this.id)">
+                        </td>
+                        <td>
+                            <input type="button" value="   " class="button btn-dark" id="6" onclick="playgame(this.id)">
+                        </td>
+                    </tr>
+                    <tr align="center">
+                        <td>
+                            <input type="button" value="   " class="button  btn-dark" id="7" onclick="playgame(this.id)">
+                        </td>
+                        <td>
+                            <input type="button" value="   " class="button btn-dark" id="8" onclick="playgame(this.id)">
+                        </td>
+                        <td>
+                            <input type="button" value="   " class="button btn-dark" id="9" onclick="playgame(this.id)">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="text-center settings" id="here" style="padding: 30px 0px 0px;">
+            <input type="button" class="btn btn-success btn-lg" value="play" onclick="next()">
+        </div>
+    </div>
+</body>
+<script>
+    var player = null;
+    var cnt = 1;
+    var val="";
+    var bool=false;
+    var mat = new Array(3);
+    var k = 1;
+    for (let i = 0; i < mat.length; i++) {
+        mat[i] = new Array(3);
+        for (let j = 0; j < mat[i].length; j++) {
+            mat[i][j] = k;
+            k++;
+            console.log(mat[i][j])
+        }
+    }
+    function next() {
+        var in1 = '<input type="button" class="btn-lg btn btn-success" value="Play as X" id="x" onclick="play1()">&nbsp; &nbsp; &nbsp';
+        var in2 = '<input type="button" class="btn-lg btn btn-success" value="Play as O" id="y" onclick="play2()">';
+        document.getElementById("here").innerHTML = in1 + in2;
+    }
+    function play1() {
+        window.player = document.getElementById("x").value;
+        document.getElementById("here").innerHTML = "";
+    }
+    function play2() {
+        window.player = document.getElementById("y").value;
+        document.getElementById("here").innerHTML = "";
+    }
+    function playgame(ids) {
+        var x1 = document.getElementById(ids).value;
+        if (player == null) {
+            alert("Select Player before playing");
+            return false
+        }
+        if(bool){
+            alert("You can't Select Position now");
+        }
+        else {
+            if (window.player == "Play as X") {
+                if (cnt <= 9) {
+                    if (cnt % 2 != 0) {
+                        window.val = 'X';
+                    }
+                    else {
+                        window.val = 'O';
+                    }
+                    if (x1 == "   ") {
+                        document.getElementById(ids).value = val;
+                        if(ids=="1"){
+                            mat[0][0]=val;
+                        }if(ids=="2"){
+                            mat[0][1]=val;
+                        }if(ids=="3"){
+                            mat[0][2]=val;
+                        }if(ids=="4"){
+                            mat[1][0]=val;
+                        }if(ids=="5"){
+                            mat[1][1]=val;
+                        }if(ids=="6"){
+                            mat[1][2]=val;
+                        }if(ids=="7"){
+                            mat[2][0]=val;
+                        }if(ids=="8"){
+                            mat[2][1]=val;
+                        }if(ids=="9"){
+                            mat[2][2]=val;
+                        }
+                        cnt++;
+                        bool=checkWin(mat,val);
+                        if(bool){
+                            return false;
+                        }
+                    }
+                    else {
+                        alert("This button is already selected");
+                    }
+                }
+                if(cnt>9 && !bool){
+                    var inpu1="Well Played The Game is a TIE <br>";
+                    var inpu2='<input type="button" class="btn-lg btn btn-success" value="Play Again" id="pa" onclick="reset()">';
+                    document.getElementById("here").innerHTML=inpu1+inpu2;
+                }
+            } else if (window.player = "Play as O") {
+                if (cnt <= 9) {
+                    if (cnt % 2 != 0) {
+                        window.val = 'O';
+                    }
+                    else {
+                        window.val = 'X';
+                    }
+                    if (x1 == "   ") {
+                        document.getElementById(ids).value = val;
+                        if(ids=="1"){
+                            mat[0][0]=val;
+                        }if(ids=="2"){
+                            mat[0][1]=val;
+                        }if(ids=="3"){
+                            mat[0][2]=val;
+                        }if(ids=="4"){
+                            mat[1][0]=val;
+                        }if(ids=="5"){
+                            mat[1][1]=val;
+                        }if(ids=="6"){
+                            mat[1][2]=val;
+                        }if(ids=="7"){
+                            mat[2][0]=val;
+                        }if(ids=="8"){
+                            mat[2][1]=val;
+                        }if(ids=="9"){
+                            mat[2][2]=val;
+                        }
+                        cnt++;
+                        window.bool=checkWin(mat,val);
+                        if(bool){
+                            return false;
+                        }
+                    }
+                    else {
+                        alert("This button is already selected");
+                    }
+                }
+                if(cnt>9 && !bool){
+                    var inpu1="Well Played The Game is a TIE <br>";
+                    var inpu2='<input type="button" class="btn-lg btn btn-success" value="Play Again" id="pa" onclick="reset()">';
+                    document.getElementById("here").innerHTML=inpu1+inpu2;
+                }
+            }
+        }
+    }
+    function checkWin(ar,val) {
+        var b=false;
+        if(ar[0][0]==ar[1][0]&&ar[1][0]==ar[2][0] || ar[0][0]==ar[0][1]&&ar[0][1]==ar[0][2] || ar[1][0]==ar[1][1]&&ar[1][1]==ar[1][2] || ar[2][0]==ar[2][1]&&ar[2][1]==ar[2][2] || ar[0][1]==ar[1][1]&&ar[1][1]==ar[2][1] || ar[0][2]==ar[1][2]&&ar[1][2]==ar[2][2] ||ar[0][0]==ar[1][1]&&ar[1][1]==ar[2][2] || ar[0][2]==ar[1][1]&&ar[1][1]==ar[2][0])
+        {
+            var input1="Congratulations "+val+" has Won the game <br> ";
+            var input2='<input type="button" class="btn-lg btn btn-success" value="Play Again" id="pa" onclick="reset()">';
+            document.getElementById("here").innerHTML=input1+input2;
+            b=true;
+        }
+        return b;
+
+    }
+    function reset(){
+       location.reload();
+    }
+</script>
+
+</html>
